@@ -7,9 +7,11 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Todo App</title>
     <link rel="stylesheet" href="/css/app.css">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <script>window.Laravel = { csrfToken: '{{ csrf_token() }}' }</script>
 </head>
 <body>
     @yield('content')
-    <script src="/js/app.js"></script>
+    {{--<script src="/js/app.js"></script>--}}
 </body>
 </html>
