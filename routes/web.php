@@ -15,6 +15,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/todos', function () {
-    return view('todos.index');
-});
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
+
+Route::get('/todos', 'TodoController@index');
+Route::post('/todo', 'TodoController@store');
+Route::delete('/todos/{todo}', 'TodoController@destroy');
