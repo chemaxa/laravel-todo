@@ -2,19 +2,22 @@
 
 namespace App\Http\Controllers;
 
+use App\Repositories\TaskRepository;
 use App\Todo;
 use Illuminate\Http\Request;
 
 class TodoController extends Controller
 {
+    protected $todos;
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(TaskRepository $todos)
     {
         $this->middleware('auth');
+        $this->todos=$todos;
     }
 
     /**
@@ -24,7 +27,7 @@ class TodoController extends Controller
      */
     public function index(Request $request)
     {
-        $todos = $request->user()->todos()->get();
+        $todos = $this->todos->forUser($request->user());
 
         return view('todos.index', [
             'todos' => $todos,
@@ -101,9 +104,12 @@ class TodoController extends Controller
      * @param  \App\Todo $todo
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Todo $todo)
+    public function destroy(Request $request, Todo $todo)
     {
-        //
+        $this->authorize('destroy', $todo);
+        $todo->delete();
+
+        return redirect('/todos');
     }
 
 }
